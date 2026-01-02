@@ -521,23 +521,17 @@
             border-radius: 5px;
             box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
             transition: all 0.2s ease;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+            overflow: visible;
+            text-overflow: clip;
+            white-space: normal;
+            word-break: break-word;
           }
           
           .text-box:hover {
             background: #fafafa;
             border-color: rgba(0, 0, 0, 0.15);
-            white-space: normal;
-            overflow: visible;
             z-index: 2;
             position: relative;
-          }
-          
-          .text-box:active {
-            white-space: normal;
-            overflow: visible;
           }
           
           .note-area {
@@ -646,6 +640,7 @@
             width: 100%;
             white-space: normal;
             overflow: visible;
+            word-break: break-word;
           }
           
           .subtitle.has-note .add-note-btn {
@@ -716,6 +711,10 @@
             border-color: rgba(0, 0, 0, 0.08);
             box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.04);
             margin-right: 28px;
+            overflow: visible;
+            text-overflow: clip;
+            white-space: normal;
+            word-break: break-word;
           }
           
           .subtitle {
@@ -815,6 +814,10 @@
             flex: 1;
             margin-right: 32px;
             padding-right: 10px;
+            overflow: visible;
+            text-overflow: clip;
+            white-space: normal;
+            word-break: break-word;
           }
           
           .add-note-btn {
@@ -833,6 +836,8 @@
             margin-right: 0;
             padding-right: 10px;
             white-space: normal;
+            overflow: visible;
+            word-break: break-word;
           }
           
           .subtitle.has-note .add-note-btn {

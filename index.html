@@ -1064,7 +1064,8 @@
         // ==================== 語言檢測相關 ====================
         function isJapaneseText(text) {
           if (!text) return false;
-          const japaneseRegex = /[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF]/;
+          // 日語文本通常包含假名
+          const japaneseRegex = /[\u3040-\u309F\u30A0-\u30FF]/;
           return japaneseRegex.test(text);
         }
         
@@ -1187,13 +1188,14 @@
           
           while (i < subtitles.length) {
             const current = subtitles[i];
+            const currentText = current.text || '';
             
             // 如果是最後一行，直接添加
             if (i === subtitles.length - 1) {
               processed.push({
-                japanese: isJapaneseText(current.text) ? current.text : '',
-                chinese: isChineseText(current.text) ? current.text : '',
-                originalText: current.text || '',
+                japanese: isJapaneseText(currentText) ? currentText : '',
+                chinese: isChineseText(currentText) ? currentText : '',
+                originalText: currentText,
                 isBilingual: false
               });
               i++;
@@ -1201,36 +1203,44 @@
             }
             
             const next = subtitles[i + 1];
+            const nextText = next.text || '';
             
             // 判斷當前和下一行是否為中日雙語對
-            const isCurrentJapanese = isJapaneseText(current.text);
-            const isCurrentChinese = isChineseText(current.text);
-            const isNextJapanese = isJapaneseText(next.text);
-            const isNextChinese = isChineseText(next.text);
+            const isCurrentJapanese = isJapaneseText(currentText);
+            const isCurrentChinese = isChineseText(currentText);
+            const isNextJapanese = isJapaneseText(nextText);
+            const isNextChinese = isChineseText(nextText);
+            
+            console.log(`行 ${i}: 當前: "${currentText.substring(0, 30)}..."`, 
+                        `日語: ${isCurrentJapanese}, 中文: ${isCurrentChinese}`);
+            console.log(`行 ${i+1}: 下一行: "${nextText.substring(0, 30)}..."`, 
+                        `日語: ${isNextJapanese}, 中文: ${isNextChinese}`);
             
             // 情況1: 日語在前，中文在後
             if (isCurrentJapanese && isNextChinese) {
+              console.log(`檢測到日語在前、中文在後: 合併行 ${i} 和 ${i+1}`);
               processed.push({
-                japanese: current.text || '',
-                chinese: next.text || '',
-                originalText: current.text || '',
+                japanese: currentText,
+                chinese: nextText,
+                originalText: `${currentText} | ${nextText}`,
                 isBilingual: true
               });
               i += 2; // 跳過兩行
             }
             // 情況2: 中文在前，日語在後
             else if (isCurrentChinese && isNextJapanese) {
+              console.log(`檢測到中文在前、日語在後: 合併行 ${i} 和 ${i+1}`);
               processed.push({
-                japanese: next.text || '',
-                chinese: current.text || '',
-                originalText: next.text || '',
+                japanese: nextText,  // 日語是下一行
+                chinese: currentText, // 中文是當前行
+                originalText: `${nextText} | ${currentText}`,
                 isBilingual: true
               });
               i += 2; // 跳過兩行
             }
             // 情況3: 同一行內包含中日文本（用分隔符分隔）
-            else if (current.text && (current.text.includes('|') || current.text.includes('/') || current.text.includes('\\'))) {
-              const parts = current.text.split(/[|/\\]/).map(p => p.trim());
+            else if (currentText && (currentText.includes('|') || currentText.includes('/') || currentText.includes('\\'))) {
+              const parts = currentText.split(/[|/\\]/).map(p => p.trim());
               if (parts.length >= 2) {
                 // 嘗試判斷哪部分是日語，哪部分是中文
                 let japanesePart = parts[0];
@@ -1245,14 +1255,14 @@
                 processed.push({
                   japanese: japanesePart,
                   chinese: chinesePart,
-                  originalText: current.text || '',
+                  originalText: currentText,
                   isBilingual: true
                 });
               } else {
                 processed.push({
-                  japanese: current.text || '',
+                  japanese: currentText,
                   chinese: '',
-                  originalText: current.text || '',
+                  originalText: currentText,
                   isBilingual: false
                 });
               }
@@ -1261,15 +1271,16 @@
             // 其他情況：單語言行
             else {
               processed.push({
-                japanese: isJapaneseText(current.text) ? current.text : '',
-                chinese: isChineseText(current.text) ? current.text : '',
-                originalText: current.text || '',
+                japanese: isJapaneseText(currentText) ? currentText : '',
+                chinese: isChineseText(currentText) ? currentText : '',
+                originalText: currentText,
                 isBilingual: false
               });
               i++;
             }
           }
           
+          console.log('合併後的字幕:', processed);
           return processed;
         }
         

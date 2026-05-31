@@ -482,7 +482,7 @@
             box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06); border: 1px solid rgba(0, 0, 0, 0.08);
           }
           .text-box {
-            width: 100%; padding: 6px 10px; height: auto; min-height: 34px; font-size: 15px;
+            width: 100%; padding: 6px 10px; height: auto; min-height: 34px; font-size: 16px;
           }
           .note-area { width: 100%; flex: none; }
           .note-container { width: 100%; flex: none; }
@@ -1304,21 +1304,57 @@
             }
         });
 
+         // ==================== 自動換行版：拖曳寫入邏輯 ====================
         subtitlesContainer.addEventListener('dragover', (e) => {
-            if (e.dataTransfer && e.dataTransfer.types) {
-                const types = Array.from(e.dataTransfer.types);
-                if (types.includes('Files')) {
-                    e.preventDefault(); 
-                }
+            if (e.target.classList.contains('note-box')) {
+                e.preventDefault(); 
+                e.target.style.borderColor = '#4CAF50';
+            }
+        });
+        
+        subtitlesContainer.addEventListener('dragleave', (e) => {
+            if (e.target.classList.contains('note-box')) {
+                e.target.style.borderColor = '';
             }
         });
         
         subtitlesContainer.addEventListener('drop', (e) => {
-            if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-                e.preventDefault();
-                showGlobalStatus('請將檔案拖曳到上方的「選擇檔案」按鈕處', 2000);
+            if (e.target.classList.contains('note-box')) {
+                e.preventDefault(); // 攔截預設行為，啟用我們的「智慧換行」邏輯
+                e.target.style.borderColor = '';
+                
+                // 防呆機制：如果不小心拖了「檔案」進來，攔截它避免網頁跳轉
+                if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+                    showGlobalStatus('不支援直接拖曳檔案到筆記框喔！', 2000);
+                    return;
+                }
+                
+                const text = e.dataTransfer.getData('text/plain');
+                if (text) {
+                    const startPos = e.target.selectionStart;
+                    const endPos = e.target.selectionEnd;
+                    const currentValue = e.target.value;
+
+                    // 【智慧換行邏輯】
+                    let prefix = '';
+                    // 如果游標不在最開頭，而且游標的前一個字元「不是換行符號」，就自動幫你補一個換行！
+                    if (startPos > 0 && currentValue.charAt(startPos - 1) !== '\n') {
+                        prefix = '\n'; 
+                    }
+
+                    const newText = prefix + text;
+                    e.target.value = currentValue.substring(0, startPos) + newText + currentValue.substring(endPos);
+                    
+                    // 把游標移到剛剛插入的文字最後面，方便繼續編輯
+                    e.target.selectionStart = e.target.selectionEnd = startPos + newText.length;
+                    
+                    // 觸發高度重算與自動存檔
+                    e.target.dispatchEvent(new Event('input', { bubbles: true })); 
+                    showGlobalStatus('文字已拖曳並自動換行', 1500);
+                }
             }
         });
+
 
         // ==================== 匯入/匯出與其他功能 ====================
         

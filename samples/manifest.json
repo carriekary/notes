@@ -191,6 +191,51 @@
           "file": "samples/escape-shame-2016-s01e11.ass"
         }
       ]
+    },
+    {
+      "name": "我的事說來話長",
+      "files": [
+        {
+          "name": "ep01",
+          "file": "samples/my-story-long-2019-s01e01.srt"
+        },
+        {
+          "name": "ep02",
+          "file": "samples/my-story-long-2019-s01e02.srt"
+        },
+        {
+          "name": "ep03",
+          "file": "samples/my-story-long-2019-s01e03.srt"
+        },
+        {
+          "name": "ep04",
+          "file": "samples/my-story-long-2019-s01e04.srt"
+        },
+        {
+          "name": "ep05",
+          "file": "samples/my-story-long-2019-s01e05.srt"
+        },
+        {
+          "name": "ep06",
+          "file": "samples/my-story-long-2019-s01e06.srt"
+        },
+        {
+          "name": "ep07",
+          "file": "samples/my-story-long-2019-s01e07.srt"
+        },
+        {
+          "name": "ep08",
+          "file": "samples/my-story-long-2019-s01e08.srt"
+        },
+        {
+          "name": "ep09",
+          "file": "samples/my-story-long-2019-s01e09.srt"
+        },
+        {
+          "name": "ep10",
+          "file": "samples/my-story-long-2019-s01e10.srt"
+        }
+      ]
     }
   ]
 }

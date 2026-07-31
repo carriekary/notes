@@ -236,6 +236,51 @@
           "file": "samples/my-story-long-2019-s01e10.srt"
         }
       ]
+    },
+    {
+      "name": "惡女誰說工作不帥氣",
+      "files": [
+        {
+          "name": "ep01",
+          "file": "samples/career-bad-girl-2025-s01e01.srt"
+        },
+        {
+          "name": "ep02",
+          "file": "samples/career-bad-girl-2025-s01e02.srt"
+        },
+        {
+          "name": "ep03",
+          "file": "samples/career-bad-girl-2025-s01e03.srt"
+        },
+        {
+          "name": "ep04",
+          "file": "samples/career-bad-girl-2025-s01e04.srt"
+        },
+        {
+          "name": "ep05",
+          "file": "samples/career-bad-girl-2025-s01e05.srt"
+        },
+        {
+          "name": "ep06",
+          "file": "samples/career-bad-girl-2025-s01e06.srt"
+        },
+        {
+          "name": "ep07",
+          "file": "samples/career-bad-girl-2025-s01e07.srt"
+        },
+        {
+          "name": "ep08",
+          "file": "samples/career-bad-girl-2025-s01e08.srt"
+        },
+        {
+          "name": "ep09",
+          "file": "samples/career-bad-girl-2025-s01e09.srt"
+        },
+        {
+          "name": "ep10",
+          "file": "samples/career-bad-girl-2025-s01e10.srt"
+        }
+      ]
     }
   ]
 }
